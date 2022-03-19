@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class MemberRepository {
 
 

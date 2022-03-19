@@ -3,6 +3,7 @@ package Basic.Blog.controller;
 import Basic.Blog.domain.Member;
 import Basic.Blog.repository.MemberRepository;
 import Basic.Blog.service.MemberService;
+import Basic.Blog.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,18 +23,20 @@ public class homeController {
     private final MemberService memberService;
 
     @GetMapping("/")
-    public String home(@CookieValue(name="memberId", required = false) Long memberId, Model model){
+    public String home(HttpServletRequest request, Model model){
 
-        if(memberId == null){
+        HttpSession session = request.getSession(false);
+
+        if(session == null){
             return "home";
         }
-        Optional<Member> loginMember = memberService.findById(memberId);
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
-        if(loginMember.isEmpty()){
+        if(loginMember == null ){
             return "home";
         }
 
-        model.addAttribute("member", loginMember.get());
+        model.addAttribute("member", loginMember);
         return "loginHome";
     }
 }

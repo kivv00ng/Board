@@ -2,6 +2,7 @@ package Basic.Blog.controller;
 
 import Basic.Blog.domain.Member;
 import Basic.Blog.service.LoginService;
+import Basic.Blog.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -29,7 +32,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm loginform, BindingResult bindingResult, HttpServletResponse response){
+    public String login(@Valid @ModelAttribute LoginForm loginform, BindingResult bindingResult, HttpServletRequest request){
         if (!StringUtils.hasText(loginform.getEmail())){
             bindingResult.addError(new FieldError("loginForm","Email", "Email을 입력하세요."));
         }
@@ -51,18 +54,18 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        //쿠키 생성 로직
-        Cookie idCookie = new Cookie("memberId", String.valueOf(loginMember.getId()));
-        response.addCookie(idCookie);
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletResponse response){
-        Cookie cookie = new Cookie("memberId", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
         return "redirect:/";
     }
 

@@ -35,5 +35,16 @@ public class Post {
 
     private LocalDateTime createDate;
 
+    protected Post() {}
+    public static Post CreatePost(String title, String content, LocalDateTime createDate){
+        Post post = new Post();
+
+        post.title= title;
+        post.content = content;
+        post.createDate = LocalDateTime.now();
+
+        return post;
+    }
+
 
 }

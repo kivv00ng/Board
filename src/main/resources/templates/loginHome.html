@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>List</title>
+</head>
+<div class="page-header text-center">
+    <h1>게시글 목록</h1>
+    <h4 class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</h4>
+</div>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <button class="btn btn-secondary" style="float: right;" onclick="location.href='home.html'" type="submit">
+            로그아웃
+        </button>
+    </form>
+    <div class="pull-right" style="float: right; margin-right: 10px; ">
+        <a href="/login" class="btn btn-primary btn-block">로그인</a>
+    </div>
+</div>
+
+<div>
+    <table class="table text-center">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post:${posts}">
+            <td th:text="${post.id}">0</td>
+            <td th:text="${post.title}">제목1</td>
+            <td th:text="${post.member.getEmail()}">멤버1</td>
+            <td>2022-03-18</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pull-right" style="float: right; margin-right: 20px; ">
+    <a href="/posts/add" class="btn btn-primary btn-block">글쓰기</a>
+</div>
+</body>
+</html>

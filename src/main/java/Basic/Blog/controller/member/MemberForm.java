@@ -1,12 +1,11 @@
-package Basic.Blog.controller;
+package Basic.Blog.controller.member;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
-@Getter @Setter
+@Getter
 public class MemberForm {
 
     @NotEmpty()

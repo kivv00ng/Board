@@ -1,5 +1,6 @@
 package Basic.Blog.domain;
 
+import Basic.Blog.controller.post.PostForm;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.*;
 
 @Entity
-@Getter @Setter
+@Getter
 public class Post {
 
     @Id
@@ -36,7 +37,7 @@ public class Post {
     private LocalDateTime createDate;
 
     protected Post() {}
-    public static Post CreatePost(String title, String content, LocalDateTime createDate){
+    public static Post CreatePost(String title, String content){
         Post post = new Post();
 
         post.title= title;
@@ -45,6 +46,12 @@ public class Post {
 
         return post;
     }
+
+    public void changePost(String title, String content){
+        this.title= title;
+        this.content = content;
+    }
+
 
 
 }

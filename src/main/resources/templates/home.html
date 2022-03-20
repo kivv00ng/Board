@@ -28,11 +28,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="post:${posts}">
+        <tr th:each="post:${posts}" >
             <td th:text="${post.id}">0</td>
-            <td th:text="${post.title}">제목1</td>
-            <td th:text="${post.member.getEmail()}">멤버1</td>
-            <td>2022-03-18</td>
+            <td> <a th:text="${post.title}" th:href="'/posts/'+${post.id}">제목 </a></td>
+            <td>임시멤버</td>
+            <td th:text="${post.createDate}">날짜</td>
         </tr>
         </tbody>
     </table>

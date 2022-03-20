@@ -1,4 +1,4 @@
-package Basic.Blog.controller;
+package Basic.Blog.controller.login;
 
 
 import lombok.Getter;

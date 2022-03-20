@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,17 +20,11 @@ public class PostRepository {
         em.persist(post);
     }
 
+    public Post findOne(Long id){
+        return em.find(Post.class, id);
+    }
     public List<Post> findAll(){
         return em.createQuery("select p from Post p", Post.class)
                 .getResultList();
     }
-
-    public List<Post> findById(Long postId){
-        return em.createQuery("select p from Post p where p.id=:postId", Post.class)
-                .setParameter("postId", postId)
-                .getResultList();
-    }
-
-    //수정, 삭제
-
 }

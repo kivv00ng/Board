@@ -31,6 +31,10 @@ public class Post {
 
     private String title;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     @Column(name = "post_content")
     private String content;
 

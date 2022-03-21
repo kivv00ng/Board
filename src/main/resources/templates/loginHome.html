@@ -34,8 +34,8 @@
         <tbody>
         <tr th:each="post:${posts}" >
             <td th:text="${post.id}">0</td>
-            <td> <a th:text="${post.title}" th:href="'/posts/'+${post.id}">제목 </a></td>
-            <td>임시멤버</td>
+            <td> <a th:text="${post.title}" th:href="'/posts/detail/'+${post.id}">제목 </a></td>
+            <td th:text="${post.getMember().getEmail()}"> 임시멤버</td>
             <td th:text="${post.createDate}">날짜</td>
         </tr>
         </tbody>

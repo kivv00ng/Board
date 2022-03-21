@@ -29,7 +29,16 @@ class MemberServiceTest {
         //then
         Assertions.assertThat(findMember).isEqualTo(member);
 
-
+    }
+    @Test
+    public void 중복회원처리() throws Exception{
+        //given
+        Member member1 = Member.CreateMember("rldnd2637@","kimkiwoong","123");
+        Member member2 = Member.CreateMember("rldnd2637@","kim","111");
+        //when
+        memberService.save(member1);
+        //then
+        assertThrows(IllegalStateException.class,()-> {memberService.save(member2);} );
     }
 
 

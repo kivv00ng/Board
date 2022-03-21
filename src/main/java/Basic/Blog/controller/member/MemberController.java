@@ -55,7 +55,9 @@ public class MemberController {
 
         //성공 로직
         Member member = Member.CreateMember(memberForm.getEmail(), memberForm.getName(), memberForm.getPassword());
+
         memberService.save(member);
+
         return "redirect:/";
     }
 

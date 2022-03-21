@@ -44,6 +44,7 @@ public class Member {
         post.setMember(this);
     }
 
+
     public void addComment(Post post,Comment comment){
         this.comments.add(comment);
         post.getComments().add(comment);

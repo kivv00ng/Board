@@ -1,9 +1,12 @@
 package Basic.Blog.controller.post;
 
 
+import Basic.Blog.domain.Member;
 import Basic.Blog.domain.Post;
 import Basic.Blog.repository.PostRepository;
+import Basic.Blog.service.MemberService;
 import Basic.Blog.service.PostService;
+import Basic.Blog.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,6 +29,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final MemberService memberService;
 
     @GetMapping("/posts/add")
     public String addPostForm(Model model){
@@ -32,7 +38,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/add")
-    public String addPost(@ModelAttribute PostForm postForm, BindingResult bindingResult){
+    public String addPost(@ModelAttribute PostForm postForm, BindingResult bindingResult, HttpServletRequest request){
         //필드 오류
         if (!StringUtils.hasText(postForm.getTitle())){
             bindingResult.addError(new FieldError("postForm","title", postForm.getTitle(), false, null,null, "제목을 입력하세요."));
@@ -46,17 +52,42 @@ public class PostController {
         }
 
         //성공 로직
+
+            ////post생성
         Post post = Post.CreatePost(postForm.getTitle(), postForm.getContent());
+
+            //해당 멤버에 추가
+        HttpSession session = request.getSession(false);
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        log.info("###loginMember={}",loginMember);
+
+        Member findMember = memberService.findOne(loginMember.getId());
+        findMember.addPost(post);
 
         postService.save(post);
 
         return "redirect:/";
     }
 
-    @GetMapping("/posts/{postId}")
-    public String post(@PathVariable Long postId, Model model){
+    @GetMapping("/posts/detail/{postId}")
+    public String post(@PathVariable Long postId, Model model, HttpServletRequest request){
         Post post = postService.findOne(postId);
+
+        Boolean loginCheck = false;
+
+        //수정 버튼 생성 여부를 결정하기 위한 로그인 정보 확인
+        HttpSession session = request.getSession(false);
+        if(session !=null) {
+            Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+            if (loginMember != null && loginMember.getEmail() == post.getMember().getEmail()) {
+                loginCheck = true;
+            }
+        }
+
         model.addAttribute("post",post);
+        model.addAttribute("loginCheck",loginCheck);
+
         return "posts/post";
     }
     @GetMapping("/posts/{postId}/edit")
@@ -75,10 +106,11 @@ public class PostController {
     }
 
     @PostMapping("/posts/{postId}/edit")
-    public String postUpdate(@PathVariable Long postId, @ModelAttribute("postForm") PostForm postForm){
+    public String postUpdate(@PathVariable Long postId, @ModelAttribute("postForm") PostForm postForm, HttpServletRequest request){
 
         postService.updatePost(postId, postForm.getTitle(), postForm.getContent() );
-        return "redirect:/posts/{postId}";
+
+        return "redirect:/posts/detail/{postId}";
     }
 
 }

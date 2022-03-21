@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
-@Getter
+@Getter @Setter
 public class MemberForm {
 
     @NotEmpty()

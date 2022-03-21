@@ -1,6 +1,7 @@
 package Basic.Blog.service;
 
 import Basic.Blog.domain.Member;
+import Basic.Blog.domain.Post;
 import Basic.Blog.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,4 +42,5 @@ public class MemberService {
     }
 
     public Optional<Member> findById(Long id){return memberRepository.findById(id);}
+
 }

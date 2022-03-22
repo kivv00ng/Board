@@ -27,23 +27,6 @@ public class MemberRepository {
     public Member findOne(Long id){
         return em.find(Member.class, id);
     }
-/*
-    public List<Member> findAll(){
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
-    }
-*/
-    public Optional<Member> findById(Long id){
-        List<Member> findMember = em.createQuery("select m from Member m where m.id =: id", Member.class)
-                .setParameter("id", id)
-                .getResultList();
-        for (Member m : findMember) {
-            if(m.getId().equals(id)) {
-                return Optional.of(m);
-            }
-        }
-        return Optional.empty();
-    }
 
     public Optional<Member> findByEmail(String email){
         List<Member> findMember = em.createQuery("select m from Member m where m.Email =: email", Member.class)

@@ -40,6 +40,7 @@ public class Post {
 
     private LocalDateTime createDate;
 
+
     protected Post() {}
     public static Post CreatePost(String title, String content){
         Post post = new Post();
@@ -56,6 +57,10 @@ public class Post {
         this.content = content;
     }
 
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+        comment.setPost(this);
+    }
 
 
 }

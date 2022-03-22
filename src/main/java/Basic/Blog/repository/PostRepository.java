@@ -23,6 +23,7 @@ public class PostRepository {
     public Post findOne(Long id){
         return em.find(Post.class, id);
     }
+
     public List<Post> findAll(){
         return em.createQuery("select p from Post p", Post.class)
                 .getResultList();

@@ -35,6 +35,7 @@ public class Comment {
     }
 
     protected Comment(){};
+
     public static Comment CreateComment(String content){
         Comment comment = new Comment();
         comment.content = content;

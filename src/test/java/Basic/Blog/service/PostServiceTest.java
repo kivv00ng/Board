@@ -1,5 +1,6 @@
 package Basic.Blog.service;
 
+import Basic.Blog.domain.Comment;
 import Basic.Blog.domain.Post;
 import Basic.Blog.repository.PostRepository;
 import org.assertj.core.api.Assertions;
@@ -17,6 +18,7 @@ class PostServiceTest {
 
     @Autowired  PostRepository postRepository;
     @Autowired  PostService postService;
+    @Autowired CommentService commentService;
 
 
     @Test
@@ -35,8 +37,8 @@ class PostServiceTest {
         //given
         Post post1 = Post.CreatePost("title22","content22");
         Post post2 = Post.CreatePost("title22","content22");
-        //when
 
+        //when
         postRepository.save(post2);
         Post findPost = postRepository.findOne(post2.getId());
         findPost.changePost("333","333");
@@ -45,6 +47,21 @@ class PostServiceTest {
 
         assertNotEquals(post1.getTitle(), post2.getTitle());
         assertNotEquals(post1.getContent(), post2.getContent());
-
     }
+/*
+    @Test
+    public void 게시글에댓글추가() throws Exception{
+        //given
+        Post post = Post.CreatePost("111","111");
+        Comment comment = Comment.CreateComment("댓글");
+        //when
+        postRepository.save(post);
+        commentService.save(comment);
+
+        post.addComment(comment);
+        //then
+        assertThat(comment.getPost()).isEqualTo(post);
+    }
+
+ */
 }

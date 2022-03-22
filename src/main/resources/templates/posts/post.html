@@ -8,29 +8,57 @@
         .field-error { border-color: #dc3545; color: #dc3545;
         }
     </style> </head> <body>
-<div class="container" th:object="${post}">
-    <div class="py-5 text-center" th:text="'글:'+ *{id}"> <h2>글쓰기</h2> </div>
-    <form action="">
-        <div>
-            <label for="title">제목</label>
-            <input type="text" th:field="*{title}" th:errorclass="field-error" class="form-control" disabled>
+<div class="container">
+    <div class="container" th:object="${post}">
+        <div class="py-5 text-center" th:text="'글:'+ *{id}"> <h2>글쓰기</h2> </div>
+        <form action="">
+            <div>
+                <label for="title">제목</label>
+                <input type="text" th:field="*{title}" th:errorclass="field-error" class="form-control" disabled>
 
-            <label for="content">내용</label>
-            <input type="text" th:field="*{content}" th:errorclass="field-error" class="form-control" disabled>
-
-            <hr class="my-4">
-        </div>
-        <div class="row">
-
-            <div th:if="${loginCheck}" class="col">
-                <button class="w-100 btn btn-primary btn-lg" th:onclick="|location.href='@{/posts/{id}/edit (id=${post.id})}'|" type="button">수정</button>
+                <label for="content">내용</label>
+                <textarea type="text" th:field="*{content}" th:errorclass="field-error" class="form-control" placeholder="내용을 입력해 주세요." disabled></textarea>
+                <hr class="my-4">
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"  th:onclick="|location.href='@{/}'|" type="button">홈</button>
-            </div>
-        </div>
+            <div class="row">
 
-    </form>
+                <div th:if="${loginCheck}" class="col">
+                    <button class="w-100 btn btn-primary btn-lg" th:onclick="|location.href='@{/posts/{id}/edit (id=${post.id})}'|" type="button">수정</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"  th:onclick="|location.href='@{/}'|" type="button">홈</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <table class="table text-center">
+            <thead>
+            <tr>
+                <th>댓글</th>
+                <th>작성자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment:${comments}" >
+                <td th:text="${comment.content}">댓글</td>
+                <td> <a th:text="${comment.getMember().getEmail()}">아이디 </a></td>
+            </tr>
+            </tbody>
+        </table>
+        <form action="" th:action th:object="${commentForm}" method="post">
+            <label for="content">댓글</label>
+            <input type="text" th:field="*{content}" th:errorclass="field-error" class="form-control">
+            <div class="field-error" th:errors="*{content}">
+                내용입력필수
+            </div>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">댓글입력</button>
+
+        </form>
+    </div>
+
 </div> <!-- /container -->
 </body>
 </html>

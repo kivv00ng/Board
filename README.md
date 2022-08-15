@@ -6,4 +6,5 @@ springboot + jpa + h2 + thymeleaf 로 만든 간단한 토이프로젝트 입니
 
 
 사용기술 : spring boot, JPA, thymeleaf, H2
+
 <img width="210" alt="image" src="https://user-images.githubusercontent.com/93498749/184575566-9e124af8-4ebb-41b6-8c79-a22273388f2f.png">
